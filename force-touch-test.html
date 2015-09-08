@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Force Touch Test</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .force-box {
+      width: 300px;
+      height: 300px;
+      padding: 0;
+      margin: 2em auto;
+      background: rgb(0, 0, 255);
+
+      text-align: center;
+
+      transition: background 200ms ease-out;
+    }
+
+    .-force-clicked {
+      background: red;
+    }
+
+    p {
+      padding-top: 125px;
+
+      font-size: 2em;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="force-box">
+    <p>Press Here</p>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+
+    var box = document.querySelector(".force-box");
+
+    var forceClickDown = function forceClickDown(event) {
+      event.preventDefault();
+
+      box.className += " -force-clicked";
+
+      var forceLevel = event["webkitForce"];
+
+      console.log('Hey, we Force Clicked buddy! Force Level is: ' + forceLevel);
+    };
+
+    var forceClickUp = function forceClickUp(event) {
+      event.preventDefault();
+
+      box.className = box.className.replace( /(?:^|\s)-force-clicked(?!\S)/g , '');
+
+      var forceLevel = event["webkitForce"];
+
+      console.log('Hey, we\'re not Force Clicking anymore buddy :( Force Level is: ' + forceLevel);
+    };
+
+    var forceChanged = function forceChanged(event) {
+      event.preventDefault();
+
+      var timeout;
+      var force = Math.round(event["webkitForce"]*100) / 100;
+
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        if(force > 1) {
+          box.style.transform = ("scale(" + force + ")");
+        } else {
+          box.style.transform = ("scale(1)");
+        }
+        console.log(force);
+      }, 300);
+    }
+
+    box.addEventListener("webkitmouseforcedown", forceClickDown, false);
+    box.addEventListener("webkitmouseforcechanged", forceChanged, false);
+    box.addEventListener("webkitmouseforceup", forceClickUp, false);
+
+
+
+    // function getEventData(event)
+    // {
+    //   // Check to see if the event has a force property
+    //   if ("webkitForce" in event)
+    //   {
+    //     // Retrieve the force level
+    //     var forceLevel = event["webkitForce"];
+    //
+    //     // Retrieve the force thresholds for click and force click
+    //     var clickForce = MouseEvent.WEBKIT_FORCE_AT_MOUSE_DOWN;
+    //     var forceClickForce = MouseEvent.WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN;
+    //
+    //     // Check for force level within the range of a normal click
+    //     if (forceLevel >= clickForce && forceLevel < forceClickForce)
+    //     {  // Perform operations in response to a normal click
+    //       $box.hide();
+    //       // Check for force level within the range of a force click
+    //     } else if (forceLevel >= forceClickForce) {
+    //       // Perform operations in response to a force click
+    //       $box.show();
+    //     }
+    //   }
+    // };
+
+
+  </script>
+</body>
+</html>
