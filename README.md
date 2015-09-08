@@ -1,0 +1,2 @@
+# force-touch-test
+Testing out Apple's Force Touch trackpad in preparation for new iPhones and iPads. To view the demo, you'll need a Macbook with the Force Touch trackpad and to be running the El Capitan Beta. Open the demo in Safari 9 and press on the blue box. The box should grow in size in response to the pressure you use on the trackpad and should change from blue to red when the Force Click event is fired.
